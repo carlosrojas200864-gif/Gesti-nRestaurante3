@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurante Gestión Pro - Gerente</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="login-screen">
+        <div class="login-card" id="card-login">
+            <h2 style="text-align: center; margin-bottom: 5px;">🔑 Acceso Gerencial</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem; text-align: center; margin-bottom: 25px;">
+                Introduce tus credenciales para gestionar el restaurante.
+            </p>
+            
+            <div style="margin-bottom: 15px;">
+                <label style="display:block; margin-bottom:8px; font-size:0.85rem; font-weight:600; color:var(--text-main);">Usuario:</label>
+                <input type="text" id="login-username" placeholder="Tu usuario de gerente">
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display:block; margin-bottom:8px; font-size:0.85rem; font-weight:600; color:var(--text-main);">Contraseña:</label>
+                <input type="password" id="login-password" placeholder="Tu contraseña">
+            </div>
+
+            <button type="button" onclick="iniciarSesionGerente()" class="btn-main" style="width: 100%; font-size: 1rem; padding: 12px;">Ingresar al Panel</button>
+            <p id="login-error" class="msg-error" style="display: none;">❌ Usuario o contraseña incorrectos</p>
+            
+            <div style="text-align: center; margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 15px;">
+                <span style="font-size: 0.85rem; color: var(--text-muted);">¿No tienes una cuenta creada?</span><br>
+                <button type="button" onclick="cambiarVistaAuth('registro')" style="background: none; border: none; color: #3b82f6; cursor: pointer; font-weight: 600; font-size: 0.85rem; margin-top: 5px;">Crear cuenta de Gerente</button>
+            </div>
+        </div>
+
+        <div class="login-card" id="card-registro" style="display: none;">
+            <h2 style="text-align: center; margin-bottom: 5px;">📝 Registro de Gerente</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem; text-align: center; margin-bottom: 20px;">
+                Crea tu cuenta de administrador y protege tu sistema.
+            </p>
+            
+            <form id="form-registro-gerente" onsubmit="registrarGerente(event)" style="background: transparent; padding: 0; margin: 0; display: block;">
+                <div style="margin-bottom: 15px;">
+                    <label style="display:block; margin-bottom:6px; font-size:0.85rem; font-weight:600; color:var(--text-main);">Nombre de Usuario:</label>
+                    <input type="text" id="reg-username" placeholder="Ej: gerente, admin, tu_nombre" required>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display:block; margin-bottom:6px; font-size:0.85rem; font-weight:600; color:var(--text-main);">Nueva Contraseña:</label>
+                    <input type="password" id="reg-password" placeholder="Mínimo 8 caracteres" oninput="validarContrasenaFuerte()" required>
+                </div>
+
+                <div class="password-policies">
+                    <div id="policy-length" class="policy-item">❌ Mínimo 8 caracteres</div>
+                    <div id="policy-upper" class="policy-item">❌ Al menos una mayúscula</div>
+                    <div id="policy-number" class="policy-item">❌ Al menos un número</div>
+                </div>
+
+                <div style="margin-bottom: 20px; margin-top: 15px;">
+                    <label style="display:block; margin-bottom:6px; font-size:0.85rem; font-weight:600; color:var(--text-main);">Confirmar Contraseña:</label>
+                    <input type="password" id="reg-password-confirm" placeholder="Repite tu contraseña" required>
+                </div>
+
+                <button type="submit" id="btn-completar-registro" class="btn-main" style="width: 100%; font-size: 1rem; padding: 12px; opacity: 0.6; cursor: not-allowed;" disabled>Completar Registro</button>
+            </form>
+            
+            <p id="reg-error" class="msg-error" style="display: none;"></p>
+
+            <div style="text-align: center; margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 15px;">
+                <button type="button" onclick="cambiarVistaAuth('login')" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.85rem;">⬅️ Volver al Inicio de Sesión</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="app-container" style="display: none;">
+        <header>
+            <div style="display: flex; flex-direction: column;">
+                <h1 style="font-size: 1.3rem;">Gestión Pro (<span id="nombre-gerente-header">Gerente</span>)</h1>
+            </div>
+            <nav>
+                <button type="button" onclick="showSection('inventario')">Inventario</button>
+                <button type="button" onclick="showSection('platillos')">Platillos</button>
+                <button type="button" onclick="showSection('ventas')">Ventas</button>
+                <button type="button" onclick="showSection('reportes')" style="background: rgba(16, 185, 129, 0.2); border-color: var(--accent); font-weight: bold;">📊 Reportes Históricos</button>
+                <button type="button" onclick="cerrarSesionGerente()" style="background: rgba(239, 68, 68, 0.2); border-color: var(--danger); color: #fca5a5;">🚪 Bloquear</button>
+            </nav>
+        </header>
+
+        <main>
+            <div id="contenedor-notificaciones"></div>
+
+            <div id="dashboard-resumen" style="display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 150px; background: #fff; padding: 15px; border-radius: 12px; border-left: 5px solid #ef4444; box-shadow: var(--shadow);">
+                    <h4 style="margin: 0; color: #64748b; font-size: 0.75rem; text-transform: uppercase;">Agotados</h4>
+                    <p id="count-agotado" style="margin: 5px 0 0; font-size: 1.8rem; font-weight: 700; color: #1e293b;">0</p>
+                </div>
+                <div style="flex: 1; min-width: 150px; background: #fff; padding: 15px; border-radius: 12px; border-left: 5px solid #f59e0b; box-shadow: var(--shadow);">
+                    <h4 style="margin: 0; color: #64748b; font-size: 0.75rem; text-transform: uppercase;">Stock Bajo</h4>
+                    <p id="count-bajo" style="margin: 5px 0 0; font-size: 1.8rem; font-weight: 700; color: #1e293b;">0</p>
+                </div>
+                <div style="flex: 1; min-width: 150px; background: #fff; padding: 15px; border-radius: 12px; border-left: 5px solid #10b981; box-shadow: var(--shadow);">
+                    <h4 style="margin: 0; color: #64748b; font-size: 0.75rem; text-transform: uppercase;">Ventas Acumuladas</h4>
+                    <p id="count-ventas" style="margin: 5px 0 0; font-size: 1.8rem; font-weight: 700; color: #1e293b;">0</p>
+                </div>
+            </div>
+
+            <section id="inventario">
+                <h2>Inventario de Insumos</h2>
+                <form id="form-insumo">
+                    <input type="text" id="insumo-nombre" placeholder="Nombre (ej: Harina, Carne)" required>
+                    <div class="row">
+                        <input type="number" id="insumo-cantidad" placeholder="Cantidad Inicial" step="0.01" required>
+                        <input type="number" id="insumo-minimo" placeholder="Avisar cuando quede menos de..." step="0.01" required>
+                        <select id="insumo-unidad">
+                            <option value="unidades">Unidades</option>
+                            <option value="gramos">Gramos (g)</option>
+                            <option value="ml">Mililitros (ml)</option>
+                        </select>
+                    </div>
+                    <button type="submit">Registrar Compra</button>
+                </form>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Insumo</th>
+                            <th>Stock Actual</th>
+                            <th>Mínimo</th>
+                            <th>Unidad</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-inventario"></tbody>
+                </table>
+            </section>
+
+            <section id="platillos" style="display:none;">
+                <h2>Gestión de Platillos</h2>
+                <form id="form-platillo">
+                    <input type="text" id="platillo-nombre" placeholder="Nombre del plato" required>
+                    <input type="number" id="platillo-precio" placeholder="Precio de venta ($)" required>
+                    <div id="lista-ingredientes-platillo"></div>
+                    <button type="button" onclick="agregarInputIngrediente()" style="background: #2980b9; margin-top: 10px; color: white; border: none; padding: 8px; border-radius: 5px; cursor: pointer;">+ Añadir Ingrediente</button>
+                    <button type="submit" style="margin-top: 10px;">Guardar Platillo</button>
+                </form>
+                <h3>Platillos Registrados</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Plato</th>
+                            <th>Precio</th>
+                            <th>Ingredientes</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-platillos"></tbody>
+                </table>
+            </section>
+
+            <section id="ventas" style="display:none;">
+                <h2>Registro de Ventas y Caja Diaria</h2>
+                <div class="venta-container" style="flex-direction: column; gap: 12px;">
+                    <div style="display: flex; gap: 15px; width: 100%; flex-wrap: wrap;">
+                        <select id="select-platillo" style="flex: 2; min-width: 200px;"></select>
+                        <select id="select-metodo-pago" style="flex: 1; min-width: 150px;">
+                            <option value="Efectivo">💵 Efectivo</option>
+                            <option value="Tarjeta">💳 Tarjeta</option>
+                            <option value="Transferencia">📲 Transferencia</option>
+                        </select>
+                    </div>
+                    <button onclick="registrarVenta()" class="btn-main" style="width: 100%; font-size: 1.05rem;">⚡ Registrar Venta</button>
+                </div>
+
+                <div style="margin-top: 25px; background: #f8fafc; padding: 15px; border-radius: var(--radius); border: 1px solid #e2e8f0;">
+                    <h4 style="margin: 0 0 12px 0; color: var(--primary); font-size: 0.95rem;">📊 Arqueo del Turno Activo</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; text-align: center;">
+                        <div style="background: white; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1;">
+                            <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">💵 Efectivo</span>
+                            <p id="total-pago-efectivo" style="margin: 4px 0 0; font-size: 1.2rem; font-weight: 700; color: #1e293b;">$0.00</p>
+                        </div>
+                        <div style="background: white; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1;">
+                            <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">💳 Tarjeta</span>
+                            <p id="total-pago-tarjeta" style="margin: 4px 0 0; font-size: 1.2rem; font-weight: 700; color: #1e293b;">$0.00</p>
+                        </div>
+                        <div style="background: white; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1;">
+                            <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">📲 Transferencia</span>
+                            <p id="total-pago-transferencia" style="margin: 4px 0 0; font-size: 1.2rem; font-weight: 700; color: #1e293b;">$0.00</p>
+                        </div>
+                    </div>
+
+                    <div id="resumen-ultimo-cierre" style="margin-top: 15px; background: #e0f2fe; padding: 10px; border-radius: 8px; border: 1px solid #7dd3fc; display: none; font-size: 0.88rem; color: #0369a1;">
+                        <strong>🌙 Último Cierre Manual:</strong> <span id="texto-resumen-cierre"></span>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 25px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; flex-wrap: wrap; gap: 10px;">
+                    <h3>Total en Caja del Turno: <span id="total-dia" style="color: var(--accent); font-weight: 700;">$0.00</span></h3>
+                    <div style="display: flex; width: 100%; max-width: 450px;">
+                        <button onclick="limpiarPantallaVentasManual()" class="btn-main" style="background-color: #3b82f6; width: 100%;">🌙 Hacer Cierre de Caja (Limpiar Pantalla)</button>
+                    </div>
+                </div>
+                <ul id="historial-ventas" style="padding: 0; margin-top: 20px;"></ul>
+            </section>
+
+            <section id="reportes" style="display:none;">
+                <h2>Panel de Reportes Contables</h2>
+                
+                <div class="reporte-filtros" style="margin-bottom: 20px;">
+                    <h4 style="margin: 0 0 10px 0; color: var(--primary);">🔍 Revisar Ventas Realizadas (Pasado/Presente)</h4>
+                    <div class="row" style="flex-wrap: wrap; margin-bottom: 15px;">
+                        <div style="flex: 1; min-width: 200px;">
+                            <label>Desde:</label>
+                            <input type="date" id="reporte-desde">
+                        </div>
+                        <div style="flex: 1; min-width: 200px;">
+                            <label>Hasta:</label>
+                            <input type="date" id="reporte-hasta">
+                        </div>
+                    </div>
+                    <button onclick="generarReportePorRango()" class="btn-main" style="background-color: #3b82f6; width: 100%;">Generar Reporte del Rango</button>
+                </div>
+
+                <div style="background: #fffbeb; padding: 15px; border-radius: var(--radius); border: 1px solid #fcd34d; margin-bottom: 25px;">
+                    <h4 style="margin: 0 0 8px 0; color: #b45309;">⏰ Programar Alerta de Cierre Contable (Futuro)</h4>
+                    <p style="color: #78350f; font-size: 0.85rem; margin: 0 0 12px 0;">Establece el rango de fechas para el cual deseas recibir el recordatorio de cierre contable.</p>
+                    
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px;">
+                        <div style="flex: 1; min-width: 180px;">
+                            <label style="color: #b45309; font-size: 0.85rem; font-weight: 600;">Desde (Inicio):</label>
+                            <input type="date" id="alerta-futura-desde" style="border: 1px solid #fcd34d; width: 100%;">
+                        </div>
+                        <div style="flex: 1; min-width: 180px;">
+                            <label style="color: #b45309; font-size: 0.85rem; font-weight: 600;">Hasta (Vencimiento):</label>
+                            <input type="date" id="alerta-futura-hasta" style="border: 1px solid #fcd34d; width: 100%;">
+                        </div>
+                    </div>
+                    
+                    <button onclick="guardarAlertaFuturaManual()" class="btn-main" style="background-color: #d97706; width: 100%;">Anclar Recordatorio de Rango</button>
+                </div>
+
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <h3 style="margin: 0;">Resultado del Filtro: <span id="reporte-total" style="color: var(--accent); font-weight: 700;">$0.00</span></h3>
+                        <button id="btn-archivar" onclick="archivarPeriodoActual()" class="btn-main" style="background-color: #f59e0b; display: none;">💾 Archivar y Cerrar Periodo</button>
+                    </div>
+                    <p id="reporte-rango-texto" style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px; margin-bottom: 15px;">Selecciona fechas arriba para revisar datos o archivar.</p>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha y Hora</th>
+                                <th>Platillo</th>
+                                <th>Método de Pago</th>
+                                <th>Total Recaudado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-reporte-resultados">
+                            <tr><td colspan="4" style="text-align: center; color: gray;">No hay datos para mostrar</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="margin-top: 35px;">
+                    <h3>📜 Historial de Reportes Archivados (Cierres Anteriores)</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha de Cierre</th>
+                                <th>Periodo Comprendido</th>
+                                <th>Total Recaudado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-historial-archivos">
+                            <tr><td colspan="4" style="text-align: center; color: gray;">No hay reportes archivados todavía.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

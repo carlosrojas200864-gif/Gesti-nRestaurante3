@@ -1,0 +1,301 @@
+/* ==========================================================================
+   VARIABLES DE DISEÑO ULTRA-MODERNO (SISTEMA INTEGRADO)
+   ========================================================================== */
+:root {
+    --bg-main: #f1f5f9;        /* Fondo gris azulado muy suave, descansa la vista */
+    --bg-card: #ffffff;        /* Tarjetas blancas puras */
+    --primary: #0f172a;        /* Azul medianoche profundo (Premium/Corporativo) */
+    --accent: #3b82f6;         /* Azul eléctrico para acciones del sistema */
+    --accent-hover: #1d4ed8;
+    --success: #10b981;        /* Verde esmeralda (Caja y Reportes) */
+    --warning: #f59e0b;        /* Ámbar (Alertas/Insumos Bajos) */
+    --danger: #ef4444;         /* Rojo coral (Agotados) */
+    --text-main: #1e293b;      /* Texto de alta legibilidad */
+    --text-muted: #64748b;     /* Detalles y textos secundarios */
+    --radius-lg: 16px;         /* Esquinas redondeadas para contenedores */
+    --radius-sm: 10px;         /* Esquinas para inputs y botones */
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+    --shadow-md: 0 10px 25px -5px rgba(15, 23, 42, 0.06), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   ESTILOS BASE Y ANIMACIÓN DE ENTRADA GENERAL
+   ========================================================================== */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 25px 20px;
+    animation: fadeInApp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeInApp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   HEADER CON EFECTO FLOTANTE DE CRISTAL
+   ========================================================================== */
+header {
+    background-color: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(10px); /* Desenfoque de fondo premium */
+    -webkit-backdrop-filter: blur(10px);
+    color: white;
+    padding: 14px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+/* MENÚ DE NAVEGACIÓN ANIMADO */
+nav {
+    display: flex;
+    gap: 6px;
+}
+
+nav button {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    padding: 10px 16px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.88rem;
+    transition: var(--transition);
+}
+
+nav button:hover {
+    color: #f8fafc;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* Cuando la sección está activa se ilumina con estilo moderno */
+nav button:focus, nav button:active {
+    background: white !important;
+    color: var(--primary) !important;
+    transform: scale(0.96);
+}
+
+/* ==========================================================================
+   TARJETAS CONTENEDORAS (SECCIONES)
+   ========================================================================== */
+section {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 25px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    transition: opacity 0.3s ease;
+}
+
+section h2 {
+    margin-top: 0;
+    margin-bottom: 22px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: -0.5px;
+}
+
+/* ==========================================================================
+   ELEMENTOS DE FORMULARIO E INPUTS MEJORADOS
+   ========================================================================== */
+form {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 25px;
+    border: 1px solid #e2e8f0;
+}
+
+.row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="password"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: var(--radius-sm);
+    background-color: white;
+    color: var(--text-main);
+    font-size: 0.92rem;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+}
+
+/* ==========================================================================
+   BOTONES CON MICRO-INTERACCIONES HÁPTICAS (EFECTO CLIC)
+   ========================================================================== */
+button, .btn-main {
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    padding: 11px 20px;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button:hover, .btn-main:hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+button:active, .btn-main:active {
+    transform: translateY(1px); /* El botón se hunde físicamente al presionarlo */
+}
+
+/* Botones Especiales de Reportes */
+#btn-archivar {
+    background-color: #f59e0b !important;
+}
+#btn-archivar:hover {
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2) !important;
+}
+
+.btn-delete {
+    background-color: #fef2f2;
+    color: var(--danger);
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    border-radius: 6px;
+}
+.btn-delete:hover {
+    background-color: var(--danger);
+    color: white;
+}
+
+/* ==========================================================================
+   TABLAS ESTILO LISTAS SUTILES (CERO RIGIDEZ)
+   ========================================================================== */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 15px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+}
+
+th {
+    background-color: #f8fafc;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: left;
+    padding: 14px 16px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+td {
+    padding: 14px 16px;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    background-color: white;
+    transition: background-color 0.2s ease;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+/* Iluminación interactiva de registros al pasar el mouse */
+tr:hover td {
+    background-color: #f8fafc;
+}
+
+/* ==========================================================================
+   BANNER DE NOTIFICACIONES (EFECTO POP-IN REBOTANTE)
+   ========================================================================== */
+.banner-alerta {
+    animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* Efecto rebote elástico */
+    box-shadow: 0 12px 24px -10px rgba(217, 119, 6, 0.2);
+}
+
+@keyframes popIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* ==========================================================================
+   PANTALLA DE ACCESO (LOGIN INTEGRAL)
+   ========================================================================== */
+#login-screen {
+    background: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.login-card {
+    background: var(--bg-card);
+    padding: 35px;
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 390px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.password-policies {
+    background: #f8fafc;
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-top: 8px;
+    font-size: 0.78rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.policy-item { color: var(--danger); transition: var(--transition); }
+.policy-item.valid { color: var(--success); font-weight: 600; }
